@@ -37,7 +37,7 @@
             "@id": "https://www.pristinelawnsandgardens.com.au",
             "url": "https://www.pristinelawnsandgardens.com.au",
             "telephone": "+61 413 027 071",
-            "email": "info@pristinelawnsandgardens.com.au",
+            "email": "contact@pristinelawnsandgardens.com.au",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Gippsland Region",
@@ -98,7 +98,7 @@
 </head>
 <body>
     <!-- Skip to Content Button -->
-    <button class="skip-to-content" onclick="document.getElementById('main-content').focus()">
+    <button class="skip-to-content" onclick="document.getElementById('main-content').focus()" tabindex="0" aria-label="Skip to main content">
         Skip to main content
     </button>
 
@@ -269,11 +269,11 @@
                 </div>
                 <div class="contact-content">
                     <div class="contact-form">
-                        <form id="quote-form" class="quote-form" action="https://api.web3forms.com/submit" method="POST">
+                        <form class="quote-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
                             <!-- Web3Forms Access Key (replace with your real key) -->
                             <input type="hidden" name="access_key" value="8df04baa-1234-4c59-b8cd-e6fcf562c617">
                             <!-- Honeypot Spam Protection -->
-                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                            <input type="checkbox" name="botcheck" class="hidden" autocomplete="off">
                             <!-- Your existing form fields -->
                             <div class="form-group">
                                 <label for="name">Full Name *</label>
@@ -297,6 +297,9 @@
                             <!-- <input type="hidden" name="redirect" value="https://yourwebsite.com/thanks.html"> -->
                             <button type="submit" class="btn btn-primary btn-full">Request Free Quote</button>
                         </form>
+                        <div id="form-success" class="form-success-message d-none" style="display:none; margin-top:2rem; color: #28a745; font-size:1.2rem; text-align:center;">
+                            Thank you! Your message has been sent successfully. We'll get back to you soon.
+                        </div>
                     </div>
                     <div class="contact-info">
                         <div class="contact-item">
@@ -323,7 +326,7 @@
                             </div>
                             <div class="contact-details">
                                 <h4>Email</h4>
-                                <p>contact@pristinelawnsandgardens.com.au</p>
+                                <p>info@pristinelawnsandgardens.com.au</p>
                             </div>
                         </div>
                         <div class="contact-item">
