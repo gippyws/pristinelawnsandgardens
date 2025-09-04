@@ -6,6 +6,15 @@
     <title>Pristine Lawns and Gardens | Lawn mowing</title>
     <meta name="description" content="Pristine Lawns and Gardens offers top-notch lawn mowing and gardening services in the Gippsland area. With a focus on attention to detail and customer satisfaction, we are dedicated to making your lawn the envy of the neighborhood. Our team of experts also provides professional tree services, planting and property maintenance.">
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TFYGLRL7R5"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TFYGLRL7R5');
+    </script>
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Pristine Lawns and Gardens | Lawn mowing">
     <meta property="og:description" content="Pristine Lawns and Gardens offers top-notch lawn mowing and gardening services in the Gippsland area. With a focus on attention to detail and customer satisfaction, we are dedicated to making your lawn the envy of the neighborhood. Our team of experts also provides professional tree services, planting and property maintenance.">
@@ -98,7 +107,7 @@
         <div class="header-container">
             <div class="logo-section">
                 <img src="./media/banner.png" alt="Pristine Lawns and Gardens Banner" class="logo logo-banner">
-                <img src="./media/banner-sm.png" alt="Pristine Lawns and Gardens Logo" class="logo logo-mobile">
+                <img src="./media/logo.png" alt="Pristine Lawns and Gardens Logo" class="logo logo-mobile">
             </div>
             <nav class="main-navigation">
                 <ul class="nav-menu">
@@ -251,12 +260,11 @@
                 </div>
                 <div class="contact-content">
                     <div class="contact-form">
-                        <form id="quote-form" class="quote-form" data-netlify="true" netlify-honeypot="bot-field">
-                            <!-- Hidden spam protection field -->
-                            <div class="hidden">
-                                <input name="bot-field" />
-                            </div>
-                            
+                        <form id="quote-form" class="quote-form" action="https://api.web3forms.com/submit" method="POST">
+                            <!-- Web3Forms Access Key (replace with your real key) -->
+                            <input type="hidden" name="access_key" value="8df04baa-1234-4c59-b8cd-e6fcf562c617">
+                            <!-- Honeypot Spam Protection -->
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                             <!-- Your existing form fields -->
                             <div class="form-group">
                                 <label for="name">Full Name *</label>
@@ -271,22 +279,13 @@
                                 <input type="tel" id="phone" name="phone">
                             </div>
                             <div class="form-group">
-                                <label for="service">Service Required</label>
-                                <select id="service" name="service">
-                                    <option value="">Select a service</option>
-                                    <option value="lawn-mowing">Lawn Mowing</option>
-                                    <option value="gardening">Gardening</option>
-                                    <option value="tree-services">Tree Services</option>
-                                    <option value="landscaping">Landscaping</option>
-                                    <option value="property-maintenance">Property Maintenance</option>
-                                    <option value="planting">Planting</option>
-                                    <option value="multiple">Multiple Services</option>
-                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="message">Additional Details</label>
                                 <textarea id="message" name="message" rows="4" placeholder="Tell us about your project..."></textarea>
                             </div>
+                            <!-- Optional: Custom redirect after success -->
+                            <!-- <input type="hidden" name="redirect" value="https://yourwebsite.com/thanks.html"> -->
                             <button type="submit" class="btn btn-primary btn-full">Request Free Quote</button>
                         </form>
                     </div>
@@ -305,7 +304,7 @@
                                 <i class="fas fa-phone"></i>
                             </div>
                             <div class="contact-details">
-                                <h4>Phone</h4>
+                                <h4>0413 027 071</h4>
                                 <p>Contact us for a quote</p>
                             </div>
                         </div>
@@ -315,7 +314,7 @@
                             </div>
                             <div class="contact-details">
                                 <h4>Email</h4>
-                                <p>info@pristinelawnsandgardens.com.au</p>
+                                <p>contact@pristinelawnsandgardens.com.au</p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -377,9 +376,7 @@
                 <div class="footer-bottom-content">
                     <p>&copy; 2025 Pristine Lawns and Gardens. All rights reserved.</p>
                     <div class="footer-social">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.facebook.com/pristinelawnsgardens" aria-label="Facebook"><i class="fab fa-facebook fa-2x"></i></a>
                     </div>
                 </div>
             </div>
