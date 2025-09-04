@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     initScrollToTop();
     initSmoothScrolling();
-    initFormHandling();
-    initScrollAnimations();
-    initMobileMenu();
+    // initFormHandling(); // Removed to allow native form submission
+    if (typeof initScrollAnimations === 'function') initScrollAnimations();
+    if (typeof initMobileMenu === 'function') initMobileMenu();
     initHeaderScrollEffect();
     
     console.log('Pristine Lawns and Gardens website loaded successfully!');
@@ -62,61 +62,7 @@ function initSmoothScrolling() {
     });
 }
 
-// Form handling and validation
-function initFormHandling() {
-    const quoteForm = document.getElementById('quote-form');
-    
-    if (quoteForm) {
-        quoteForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const formObject = {};
-            
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-            
-            // Validate form
-            if (validateForm(formObject)) {
-                // Show loading state
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Sending...';
-                submitBtn.disabled = true;
-                
-                // Simulate form submission (replace with actual form handling)
-                setTimeout(() => {
-                    // Show success message
-                    showNotification('Thank you! Your quote request has been sent successfully. We\'ll get back to you soon.', 'success');
-                    
-                    // Reset form
-                    this.reset();
-                    
-                    // Reset button
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Remove any error states
-                    clearFormErrors();
-                }, 2000);
-            }
-        });
-        
-        // Real-time validation
-        const formInputs = quoteForm.querySelectorAll('input, select, textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('blur', function() {
-                validateField(this);
-            });
-            
-            input.addEventListener('input', function() {
-                clearFieldError(this);
-            });
-        });
-    }
-}
+// Form handling and validation removed to allow native form submission to Web3Forms
 
 // Form validation
 function validateForm(data) {
@@ -216,7 +162,7 @@ function showNotification(message, type = 'info') {
             <span class="notification-message">${message}</span>
             <button class="notification-close" aria-label="Close notification">&times;</button>
         </div>
-    `;
+    `
     
     // Add styles
     notification.style.cssText = `
@@ -242,64 +188,63 @@ function showNotification(message, type = 'info') {
         notification.remove();
     });
     
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.animation = 'slideOutRight 0.3s ease-out';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 300);
-        }
-    }, 5000);
-}
-
-// Scroll animations
-function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // Observe elements for animation
-    const animateElements = document.querySelectorAll('.service-card, .about-content, .contact-content');
-    animateElements.forEach(el => {
-        observer.observe(el);
-    });
-}
-
-// Mobile menu functionality
-function initMobileMenu() {
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNavigation = document.querySelector('.main-navigation');
-    
-    if (mobileMenuToggle && mainNavigation) {
-        mobileMenuToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-            mainNavigation.classList.toggle('active');
-            
-            // Animate hamburger menu
-            const spans = this.querySelectorAll('span');
-            if (this.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            } else {
-                spans[0].style.transform = 'none';
+    // Form handling and validation
+    // function initFormHandling() {
+    //     const quoteForm = document.getElementById('quote-form');
+    //     
+    //     if (quoteForm) {
+    //         quoteForm.addEventListener('submit', function(e) {
+    //             e.preventDefault();
+    //             
+    //             // Get form data
+    //             const formData = new FormData(this);
+    //             const formObject = {};
+    //             
+    //             formData.forEach((value, key) => {
+    //                 formObject[key] = value;
+    //             });
+    //             
+    //             // Validate form
+    //             if (validateForm(formObject)) {
+    //                 // Show loading state
+    //                 const submitBtn = this.querySelector('button[type="submit"]');
+    //                 const originalText = submitBtn.textContent;
+    //                 submitBtn.textContent = 'Sending...';
+    //                 submitBtn.disabled = true;
+    //                 
+    //                 // Simulate form submission (replace with actual form handling)
+    //                 setTimeout(() => {
+    //                     // Show success message
+    //                     showNotification('Thank you! Your quote request has been sent successfully. We\'ll get back to you soon.', 'success');
+    //                     
+    //                     // Reset form
+    //                     this.reset();
+    //                     
+    //                     // Reset button
+    //                     submitBtn.textContent = originalText;
+    //                     submitBtn.disabled = false;
+    //                     
+    //                     // Remove any error states
+    //                     clearFormErrors();
+    //                 }, 2000);
+    //             }
+    //         });
+    //         
+    //         // Real-time validation
+    //         const formInputs = quoteForm.querySelectorAll('input, select, textarea');
+    //         formInputs.forEach(input => {
+    //             input.addEventListener('blur', function() {
+    //                 validateField(this);
+    //             });
+    //             
+    //             input.addEventListener('input', function() {
+    //                 clearFieldError(this);
+    //             });
+    //         });
+    //     }
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'none';
             }
-        });
         
         // Close mobile menu when clicking on a link
         const mobileNavLinks = mainNavigation.querySelectorAll('.nav-link');
@@ -329,8 +274,6 @@ function initMobileMenu() {
                 spans[2].style.transform = 'none';
             }
         });
-    }
-}
 
 // Header scroll effect
 function initHeaderScrollEffect() {
