@@ -30,23 +30,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // Initialize all functionality
+    // Initialize all functionality (functions are defined below)
     initScrollToTop();
     initSmoothScrolling();
     initFormHandling();
     initScrollAnimations();
     initMobileMenu();
     initHeaderScrollEffect();
-    
+
     console.log('Pristine Lawns and Gardens website loaded successfully!');
 });
 
-// Scroll to Top functionality
+// -------- Utilities & Features (minimal safe versions) --------
+
+// Scroll to Top functionality (safe minimal)
 function initScrollToTop() {
     const scrollToTopBtn = document.getElementById('scroll-to-top');
-    
-    // Show/hide scroll to top button based on scroll position
+    if (!scrollToTopBtn) return;
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
             scrollToTopBtn.classList.add('show');
@@ -54,286 +54,102 @@ function initScrollToTop() {
             scrollToTopBtn.classList.remove('show');
         }
     });
-    
-    // Smooth scroll to top when button is clicked
     scrollToTopBtn.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
-// Smooth scrolling for navigation links
+// Smooth internal anchor scrolling
 function initSmoothScrolling() {
-    const navLinks = document.querySelectorAll('.nav-link, .footer-links a');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            
-            // Only handle internal links
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    const headerHeight = document.querySelector('.header').offsetHeight;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            }
+    const links = document.querySelectorAll('.nav-link, .footer-links a');
+    if (!links.length) return;
+    links.forEach(link => {
+        link.addEventListener('click', function (e) {
+            const href = this.getAttribute('href') || '';
+            if (!href.startsWith('#')) return;
+            e.preventDefault();
+            const target = document.getElementById(href.slice(1));
+            if (!target) return;
+            const header = document.querySelector('.header');
+            const headerH = header ? header.offsetHeight : 0;
+            const y = target.getBoundingClientRect().top + window.pageYOffset - headerH - 10;
+            window.scrollTo({ top: y, behavior: 'smooth' });
         });
     });
 }
 
-// Scroll animations
-function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // Observe elements for animation
-    const animateElements = document.querySelectorAll('.service-card, .about-content, .contact-content');
-    animateElements.forEach(el => {
-        observer.observe(el);
-    });
-}
+// No-op; Web3Forms handles submit. Keep to avoid ReferenceError.
+function initFormHandling() {}
 
-// Mobile menu functionality
+// Optional animations; safe no-op
+function initScrollAnimations() {}
+
+// Mobile menu with exact header height
 function initMobileMenu() {
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNavigation = document.querySelector('.main-navigation');
-    
-    if (mobileMenuToggle && mainNavigation) {
-        mobileMenuToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-            mainNavigation.classList.toggle('active');
-            
-            // Animate hamburger menu
-            const spans = this.querySelectorAll('span');
-            if (this.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
-        
-        // Close mobile menu when clicking on a link
-        const mobileNavLinks = mainNavigation.querySelectorAll('.nav-link');
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenuToggle.classList.remove('active');
-                mainNavigation.classList.remove('active');
-                
-                // Reset hamburger animation
-                const spans = mobileMenuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            });
-        });
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!mobileMenuToggle.contains(e.target) && !mainNavigation.contains(e.target)) {
-                mobileMenuToggle.classList.remove('active');
-                mainNavigation.classList.remove('active');
-                
-                // Reset hamburger animation
-                const spans = mobileMenuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const nav = document.getElementById('main-navigation') || document.querySelector('.main-navigation');
+    const header = document.querySelector('.header');
+    if (!toggle || !nav || !header) return;
+
+    function applyPosition() {
+        const h = header.offsetHeight || 0;
+        nav.style.top = h + 'px';
+        nav.style.maxHeight = `calc(100vh - ${h}px)`;
     }
+    applyPosition();
+
+    function openMenu() {
+        toggle.classList.add('active');
+        nav.classList.add('active');
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('menu-open');
+        applyPosition();
+    }
+    function closeMenu() {
+        toggle.classList.remove('active');
+        nav.classList.remove('active');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
+    }
+    function toggleMenu() {
+        if (nav.classList.contains('active')) closeMenu(); else openMenu();
+    }
+    toggle.addEventListener('click', toggleMenu);
+    toggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
+            e.preventDefault();
+            toggleMenu();
+        }
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (!toggle.contains(e.target) && !nav.contains(e.target)) closeMenu();
+    });
+    // Close on nav link click
+    nav.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', closeMenu));
+    // Recompute on resize and load
+    window.addEventListener('resize', applyPosition);
+    window.addEventListener('load', applyPosition);
 }
 
-// Header scroll effect
+// Header scroll hide/show and shadow
 function initHeaderScrollEffect() {
     const header = document.querySelector('.header');
+    if (!header) return;
     let lastScrollTop = 0;
-    
     window.addEventListener('scroll', function() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Add/remove scrolled class for styling
-        if (scrollTop > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-        
-        // Hide/show header on scroll (optional)
+        if (scrollTop > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled');
         if (scrollTop > lastScrollTop && scrollTop > 200) {
-            // Scrolling down
             header.style.transform = 'translateY(-100%)';
         } else {
-            // Scrolling up
             header.style.transform = 'translateY(0)';
         }
-        
         lastScrollTop = scrollTop;
     });
 }
 
-// Add CSS for mobile menu and notifications
-function addDynamicStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-        /* Mobile menu styles */
-        @media (max-width: 768px) {
-            .main-navigation {
-                position: fixed;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: white;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                transform: translateY(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-            }
-            
-            .main-navigation.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-            
-            .nav-menu {
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1rem;
-            }
-            
-            .mobile-menu-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-            
-            .mobile-menu-toggle.active span:nth-child(2) {
-                opacity: 0;
-            }
-            
-            .mobile-menu-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -6px);
-            }
-        }
-        
-        /* Header scroll effect */
-        .header.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Notification animations */
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-        
-        /* Form validation styles */
-        .form-group.error input,
-        .form-group.error select,
-        .form-group.error textarea {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-        }
-        
-        .error-message {
-            color: #dc3545;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .error-message::before {
-            content: "⚠";
-            font-size: 1rem;
-        }
-        
-        /* Loading state for form */
-        .btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-        
-        /* Enhanced focus styles */
-        .btn:focus,
-        .nav-link:focus {
-            outline: 2px solid #7B9E36;
-            outline-offset: 2px;
-        }
-        
-        /* Smooth transitions for all interactive elements */
-        * {
-            transition: all 0.3s ease;
-        }
-        
-        /* Hover effects for service cards */
-        .service-card:hover .service-icon {
-            transform: scale(1.1);
-        }
-        
-        .service-card:hover .service-title {
-            color: #7B9E36;
-        }
-        
-        /* Enhanced button hover effects */
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-    `;
-    
-    document.head.appendChild(style);
-}
-
-// Initialize dynamic styles
-addDynamicStyles();
+// Remove dynamic style injection to avoid conflicts with styles.css
 
 // Performance optimization: Lazy loading for images
 function initLazyLoading() {
