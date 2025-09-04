@@ -1,12 +1,42 @@
+// Web3Forms AJAX and success message logic
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('contact-form');
+    var success = document.getElementById('form-success');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    form.style.display = 'none';
+                    if (success) {
+                        success.style.display = 'block';
+                        success.classList.remove('d-none');
+                    }
+                } else {
+                    alert('There was an error sending your message. Please try again.');
+                }
+            })
+            .catch(function() {
+                alert('There was an error sending your message. Please try again.');
+            });
+        });
+    }
+});
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize all functionality
     initScrollToTop();
     initSmoothScrolling();
-    // initFormHandling(); // Removed to allow native form submission
-    if (typeof initScrollAnimations === 'function') initScrollAnimations();
-    if (typeof initMobileMenu === 'function') initMobileMenu();
+    initFormHandling();
+    initScrollAnimations();
+    initMobileMenu();
     initHeaderScrollEffect();
     
     console.log('Pristine Lawns and Gardens website loaded successfully!');
@@ -62,189 +92,51 @@ function initSmoothScrolling() {
     });
 }
 
-// Form handling and validation removed to allow native form submission to Web3Forms
-
-// Form validation
-function validateForm(data) {
-    let isValid = true;
+// Scroll animations
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
     
-    // Required fields
-    if (!data.name || data.name.trim() === '') {
-        showFieldError('name', 'Name is required');
-        isValid = false;
-    }
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
     
-    if (!data.email || data.email.trim() === '') {
-        showFieldError('email', 'Email is required');
-        isValid = false;
-    } else if (!isValidEmail(data.email)) {
-        showFieldError('email', 'Please enter a valid email address');
-        isValid = false;
-    }
-    
-    return isValid;
-}
-
-// Field validation
-function validateField(field) {
-    const value = field.value.trim();
-    const fieldName = field.name;
-    
-    if (field.hasAttribute('required') && !value) {
-        showFieldError(fieldName, `${field.previousElementSibling.textContent.replace(' *', '')} is required`);
-        return false;
-    }
-    
-    if (fieldName === 'email' && value && !isValidEmail(value)) {
-        showFieldError(fieldName, 'Please enter a valid email address');
-        return false;
-    }
-    
-    return true;
-}
-
-// Show field error
-function showFieldError(fieldName, message) {
-    const field = document.querySelector(`[name="${fieldName}"]`);
-    const formGroup = field.closest('.form-group');
-    
-    // Remove existing error
-    clearFieldError(field);
-    
-    // Add error class
-    formGroup.classList.add('error');
-    
-    // Create and add error message
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'error-message';
-    errorMessage.textContent = message;
-    formGroup.appendChild(errorMessage);
-}
-
-// Clear field error
-function clearFieldError(field) {
-    const formGroup = field.closest('.form-group');
-    const errorMessage = formGroup.querySelector('.error-message');
-    
-    if (errorMessage) {
-        errorMessage.remove();
-    }
-    
-    formGroup.classList.remove('error');
-}
-
-// Clear all form errors
-function clearFormErrors() {
-    const errorMessages = document.querySelectorAll('.error-message');
-    const errorFormGroups = document.querySelectorAll('.form-group.error');
-    
-    errorMessages.forEach(msg => msg.remove());
-    errorFormGroups.forEach(group => group.classList.remove('error'));
-}
-
-// Email validation
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Show notification
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => notification.remove());
-    
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-        <div class="notification-content">
-            <span class="notification-message">${message}</span>
-            <button class="notification-close" aria-label="Close notification">&times;</button>
-        </div>
-    `
-    
-    // Add styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        z-index: 10000;
-        max-width: 400px;
-        animation: slideInRight 0.3s ease-out;
-    `;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Close button functionality
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
-        notification.remove();
+    // Observe elements for animation
+    const animateElements = document.querySelectorAll('.service-card, .about-content, .contact-content');
+    animateElements.forEach(el => {
+        observer.observe(el);
     });
+}
+
+// Mobile menu functionality
+function initMobileMenu() {
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNavigation = document.querySelector('.main-navigation');
     
-    // Form handling and validation
-    // function initFormHandling() {
-    //     const quoteForm = document.getElementById('quote-form');
-    //     
-    //     if (quoteForm) {
-    //         quoteForm.addEventListener('submit', function(e) {
-    //             e.preventDefault();
-    //             
-    //             // Get form data
-    //             const formData = new FormData(this);
-    //             const formObject = {};
-    //             
-    //             formData.forEach((value, key) => {
-    //                 formObject[key] = value;
-    //             });
-    //             
-    //             // Validate form
-    //             if (validateForm(formObject)) {
-    //                 // Show loading state
-    //                 const submitBtn = this.querySelector('button[type="submit"]');
-    //                 const originalText = submitBtn.textContent;
-    //                 submitBtn.textContent = 'Sending...';
-    //                 submitBtn.disabled = true;
-    //                 
-    //                 // Simulate form submission (replace with actual form handling)
-    //                 setTimeout(() => {
-    //                     // Show success message
-    //                     showNotification('Thank you! Your quote request has been sent successfully. We\'ll get back to you soon.', 'success');
-    //                     
-    //                     // Reset form
-    //                     this.reset();
-    //                     
-    //                     // Reset button
-    //                     submitBtn.textContent = originalText;
-    //                     submitBtn.disabled = false;
-    //                     
-    //                     // Remove any error states
-    //                     clearFormErrors();
-    //                 }, 2000);
-    //             }
-    //         });
-    //         
-    //         // Real-time validation
-    //         const formInputs = quoteForm.querySelectorAll('input, select, textarea');
-    //         formInputs.forEach(input => {
-    //             input.addEventListener('blur', function() {
-    //                 validateField(this);
-    //             });
-    //             
-    //             input.addEventListener('input', function() {
-    //                 clearFieldError(this);
-    //             });
-    //         });
-    //     }
+    if (mobileMenuToggle && mainNavigation) {
+        mobileMenuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mainNavigation.classList.toggle('active');
+            
+            // Animate hamburger menu
+            const spans = this.querySelectorAll('span');
+            if (this.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'none';
             }
+        });
         
         // Close mobile menu when clicking on a link
         const mobileNavLinks = mainNavigation.querySelectorAll('.nav-link');
@@ -274,6 +166,8 @@ function showNotification(message, type = 'info') {
                 spans[2].style.transform = 'none';
             }
         });
+    }
+}
 
 // Header scroll effect
 function initHeaderScrollEffect() {
