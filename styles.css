@@ -696,8 +696,8 @@ p {
     }
 
     .logo {
-        content: url('./media/banner-sm.png');
-        height: 50px; /* Smaller size for mobile */
+        content: url('./media/logo.png');
+        height: 75px; /* Smaller size for mobile */
     }
 }
 
