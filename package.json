@@ -1,0 +1,54 @@
+{
+  "name": "pristine-lawns-gardens-website",
+  "version": "1.0.0",
+  "description": "A modern, responsive website for Pristine Lawns and Gardens - professional lawn mowing and gardening services in Gippsland, Victoria, Australia.",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "serve": "python -m http.server 8000",
+    "test": "echo \"No tests specified\" && exit 0",
+    "build": "echo \"No build process required - static HTML/CSS/JS\"",
+    "lint:html": "echo \"HTML linting not configured\"",
+    "lint:css": "echo \"CSS linting not configured\"",
+    "lint:js": "echo \"JavaScript linting not configured\"",
+    "format": "echo \"Formatting not configured\""
+  },
+  "keywords": [
+    "lawn-mowing",
+    "gardening-services",
+    "landscaping",
+    "tree-services",
+    "property-maintenance",
+    "gippsland",
+    "victoria",
+    "australia",
+    "responsive-website",
+    "html5",
+    "css3",
+    "vanilla-javascript"
+  ],
+  "author": "Pristine Lawns and Gardens",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/pristine-lawns-gardens-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/pristine-lawns-gardens-website/issues"
+  },
+  "homepage": "https://www.pristinelawnsandgardens.com.au",
+  "devDependencies": {},
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "private": true
+}
