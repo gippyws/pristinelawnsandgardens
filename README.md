@@ -9,8 +9,7 @@ A professional, responsive website for Pristine Lawns and Gardens, a lawn mowing
 - **SEO Optimized** - Proper meta tags, structured data, and semantic HTML
 - **Accessibility Compliant** - WCAG guidelines followed for inclusive design
 - **Fast Loading** - Optimized images and efficient code structure
-- **Contact Form** - Netlify form integration for easy quote requests
-- **No External Dependencies** - Completely self-contained, no Wix traces
+- **Contact Form** - Web3Forms form integration for easy quote requests
 
 ## File Structure
 
@@ -36,7 +35,7 @@ www.pristinelawnsandgardens.com.au/
 - **JavaScript (ES6+)** - Interactive functionality
 - **Font Awesome** - Icon library
 - **Google Fonts** - Typography (Poppins)
-- **Netlify Forms** - Contact form handling
+- **Web3Forms** - Contact form handling
 
 ## Services Offered
 
@@ -50,7 +49,7 @@ www.pristinelawnsandgardens.com.au/
 ## Contact Information
 
 - **Service Area**: Gippsland Region, Victoria
-- **Email**: info@pristinelawnsandgardens.com.au
+- **Email**: contact@pristinelawnsandgardens.com.au
 - **Business Hours**: 
   - Monday - Friday: 7:00 AM - 6:00 PM
   - Saturday: 8:00 AM - 4:00 PM
@@ -58,7 +57,7 @@ www.pristinelawnsandgardens.com.au/
 
 ## Development
 
-This website has been completely rebuilt from scratch with no dependencies on Wix or any other website builder platform. All code is custom-written and optimized for performance and maintainability.
+Code is custom-written and optimized for performance and maintainability.
 
 ### Local Development
 
@@ -107,3 +106,4 @@ Simply upload all files to your web hosting provider. The website is completely 
 ## License
 
 All rights reserved. This website and its contents are the property of Pristine Lawns and Gardens.
+
